@@ -1,6 +1,6 @@
 # Web-App to Forecast Univariate Time-Series Data
 
-#### Univariate time-series dataset (csv) can be uploaded to web-app and number of periods to forecast can be inputed for automated forecasting using facebook prophet model with a box-cox pre & post processing (inverse box-cox). 
+#### Univariate time-series dataset (csv) can be uploaded to web-app and number of periods to forecast can be inputed for automated forecasting using facebook prophet forecasting model along with a box-cox data transform.
 
 ## Steps to use Web-App:
 
