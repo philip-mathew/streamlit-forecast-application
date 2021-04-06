@@ -1,6 +1,6 @@
 # Web-App to Forecast Univariate Time-Series Data
 
-#### Univariate time-series dataset (csv) can be uploaded to web-app, along with time period frequency and number of periods to forecast for automated forecasting using facebook prophet library along with a box-cox data transform.
+#### Univariate time-series dataset (csv) can be uploaded to web-app, along with time period frequency and number of periods to forecast for automated forecasting using facebook prophet library.
 
 #### Prophet forecasts time series data based on an additive model where non-linear trends are fit with yearly, weekly, and daily seasonality, plus holiday effects. It works best with time series that have strong seasonal effects and several seasons of historical data. Prophet is also robust to missing data and shifts in the trend, and typically handles outliers well.
 
