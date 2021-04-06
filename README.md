@@ -8,6 +8,6 @@ https://facebook.github.io/prophet/
 
 ## Steps to use Web-App:
 
-1. Upload csv file of univariate time series dataset for forecasting
-2. Select number of future periods to forecast
-3. Press on forecast button to generate forecast plot
+1. Upload csv file of univariate time series dataset for forecasting.
+2. Select number of future periods to forecast.
+3. Press on forecast button to generate forecast plot.
