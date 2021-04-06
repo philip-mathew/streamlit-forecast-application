@@ -33,11 +33,12 @@ def download_link(object_to_download, download_filename, download_link_text):
 def main():
     
     # title & header
-    st.title("Data Forecast Application")
+    st.title("Time Series Forecast Application")
     st.markdown("Built by [Philip Mathew](https://github.com/philip-mathew)")
     st.write("Data Science web application for automated forecasting of univariate time-series data.")
     st.write("Univariate time-series dataset (csv) can be uploaded below and forecast period can be inputed for automated forecasting using facebook prophet library and box-cox data transform.")
     st.markdown("Prophet forecasts time series data based on an additive model where non-linear trends are fit with yearly, weekly, and daily seasonality, plus holiday effects. It works best with time series that have strong seasonal effects and several seasons of historical data. Prophet is also robust to missing data and shifts in the trend, and typically handles outliers well.")
+    st.markdown("---")
     st.header('Input Time Series Dataset')
     
     # Streamlit file upload - csv only
@@ -69,6 +70,8 @@ def main():
             st.subheader("Time Series Plot:")
             st.altair_chart(ca.mark_line(color='firebrick').properties(width=1100,height=400))    
     
+    st.markdown("---")
+    
     # Forecast frequency selection
     st.header('Select Forecast Frequency')
     freq = st.selectbox('Select the frequency of forecast:', ['Day', 'Week', 'Month', 'Quarter', 'Year', '1 Second', '1 Minute',                                                               '1 Hour'])
@@ -89,11 +92,14 @@ def main():
     elif freq == '1 Hour':
         freq = 3600 
     
+    st.markdown("---")
+    
     # Forecast duration selection
     st.header('Select Forecast Period')
     dur = st.number_input('Enter number of periods (of frequency) to forecast in future:',  min_value = 1, step = 1)
     
-    
+    st.markdown("---")
+
     # Forecast Button
     if st.button("Forecast"):
             if data_file is not None:  
@@ -144,6 +150,7 @@ def main():
                     
                     # Processing complete
                     st.success('Done')
+                    st.markdown("---")
                     st.header('Time Series Forecast')
                     
                     # Plotting
@@ -154,8 +161,10 @@ def main():
     
                     # Download link for forecast (csv)
                     tmp_download_link = download_link(df_comb, 'Data_w_forecast.csv', 'Click here to download your forecast!')
-                    st.subheader("Download your forecast (csv file):")
+                    st.subheader("Download Forecast (csv file):")
                     st.markdown(tmp_download_link, unsafe_allow_html=True)
+                    st.markdown("---")
+
 
                 
 if __name__ == '__main__': 
