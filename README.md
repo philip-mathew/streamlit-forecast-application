@@ -10,4 +10,5 @@ https://facebook.github.io/prophet/
 
 1. Upload csv file of univariate time series dataset for forecasting.
 2. Select number of future periods to forecast.
-3. Press on forecast button to generate forecast plot.
+3. Click on forecast button to generate forecast plot.
+4. Click on download link to downlaod csv of (history + forecast).  
