@@ -42,7 +42,7 @@ def main():
     st.header('Input Time Series Dataset')
     
     # Streamlit file upload - csv only
-    data_file = st.file_uploader("Upload CSV with two columns; Date/Time & Variable:",type=['csv'])
+    data_file = st.file_uploader("Upload CSV with two columns (Date/Time & Variable):",type=['csv'])
     df_comb = None
     if data_file is not None:  
         df = pd.read_csv(data_file)                 # Reading csv
@@ -59,15 +59,15 @@ def main():
             df_fr = df
             df_fr['ds'] = df_fr[date[0]]       # Column 'ds' for Prophet to use
             df_fr['y'] = df_fr[val[0]]          # Column 'y' for Prophet to use
-            st.write('Columns', date[0], '&', val[0], ' were detected in dataset.')
+            st.write('Columns', date[0], '&', val[0], ' were detected in dataset')
             df = df.rename(columns={date[0]:'index'}).set_index('index')
-            st.subheader("Input Dataset:")
+            st.subheader("Input Dataset")
             st.dataframe(df[val[0]])
-            st.subheader("Summary Statistics:")
+            st.subheader("Summary Statistics")
             st.write(df[val[0]].describe())
             ca = alt.Chart(df.reset_index()).encode(x = alt.X('index:T', axis=alt.Axis(title=                       
                                                                   date[0])),y=val[0]).interactive()
-            st.subheader("Time Series Plot:")
+            st.subheader("Time Series Plot")
             st.altair_chart(ca.mark_line(color='firebrick').properties(width=1100,height=400))    
     
     st.markdown("---")
@@ -146,7 +146,7 @@ def main():
                     dom = ['Historic', 'Forecast']
                     base = alt.Chart(df_comb.reset_index()).encode(x = alt.X('index:T', axis=alt.Axis(title=                                                                      date[0])))  
                     ml_plot = base.mark_line(interpolate='monotone').encode(y=val[0],color=alt.Color('Type',                                                                         scale=alt.Scale(domain=dom, range=rng)),).interactive()
-                    area = base.mark_area(opacity=0.5,color='grey').encode(alt.Y('yhat_upper'),                                                                     alt.Y2('yhat_lower')).interactive()
+                    area = base.mark_area(opacity=0.5,color='grey').encode(alt.Y('yhat_upper', axis=alt.Axis(title='')),                                                                     alt.Y2('yhat_lower')).interactive()
                     
                     # Processing complete
                     st.success('Done')
@@ -154,14 +154,14 @@ def main():
                     st.header('Time Series Forecast')
                     
                     # Plotting
-                    st.subheader("Forecast Components:")
+                    st.subheader("Forecast Components")
                     st.write(comp)
-                    st.subheader("Time Series Plot with Forecast:")
-                    st.altair_chart(alt.layer(ml_plot,area).properties(width=1100,height=400).resolve_scale(y = 'independent'))
+                    st.subheader("Time Series Plot with Forecast")
+                    st.altair_chart(alt.layer(ml_plot,area).properties(width=1100,height=400))
     
                     # Download link for forecast (csv)
                     tmp_download_link = download_link(df_comb, 'Data_w_forecast.csv', 'Click here to download your forecast!')
-                    st.subheader("Download Forecast (csv file):")
+                    st.subheader("Download Forecast (csv file)")
                     st.markdown(tmp_download_link, unsafe_allow_html=True)
                     st.markdown("---")
 
