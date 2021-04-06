@@ -16,6 +16,7 @@ import altair as alt
 from scipy.stats import boxcox
 from scipy.special import inv_boxcox
 import base64
+from fbprophet.plot import plot_plotly, plot_components_plotly
 
 # CSV Download link generation function
 def download_link(object_to_download, download_filename, download_link_text):
@@ -36,7 +37,7 @@ def main():
     st.title("Time Series Forecast Application")
     st.markdown("Built by [Philip Mathew](https://github.com/philip-mathew)")
     st.write("Data Science web application for automated forecasting of univariate time-series data.")
-    st.write("Univariate time-series dataset (csv) can be uploaded below and forecast period can be inputed for automated forecasting using facebook prophet library and box-cox data transform.")
+    st.write("Univariate time-series dataset (csv) can be uploaded below and forecast period can be inputed for automated forecasting using facebook prophet library.")
     st.markdown("Prophet forecasts time series data based on an additive model where non-linear trends are fit with yearly, weekly, and daily seasonality, plus holiday effects. It works best with time series that have strong seasonal effects and several seasons of historical data. Prophet is also robust to missing data and shifts in the trend, and typically handles outliers well.")
     st.markdown("---")
     st.header('Input Time Series Dataset')
@@ -68,7 +69,7 @@ def main():
             ca = alt.Chart(df.reset_index()).encode(x = alt.X('index:T', axis=alt.Axis(title=                       
                                                                   date[0])),y=val[0]).interactive()
             st.subheader("Time Series Plot")
-            st.altair_chart(ca.mark_line(color='firebrick').properties(width=1100,height=400))    
+            st.altair_chart(ca.mark_line(color='#4267B2').properties(width=1100,height=400))    
     
     st.markdown("---")
     
@@ -106,12 +107,12 @@ def main():
                 st.spinner()
                 with st.spinner(text='Prophet is forecasting....'):
                     
-                    # Data-Prep:
+                    # Data-Prep: (In testing)
                      # Applying Box-Cox Transform to value column and assigning to new column y
                       # Box-Cox Transform evaluates a set of lambda coefficients (λ) and selects the                             
                        # value that achieves the best approximation of normality
                       # Box-Cox will select the λ that maximizes the log-likelihood function 
-                    df_fr['y'], lam = boxcox(df_fr[val[0]])
+                    #df_fr['y'], lam = boxcox(df_fr[val[0]])  
                     
                     # Initiating Prophet:
                     ml = fbprophet.Prophet()     # Creating an instance of Prophet object
@@ -124,11 +125,10 @@ def main():
                     forecast = ml.predict(future_points)
                     
                     # Components of forecast 
-                    comp = ml.plot_components(forecast)
-
+                    comp = plot_components_plotly(ml, forecast)
+                    fig = plot_plotly(ml, forecast)
                     # Applying Inverse Box-Cox Transform 
-                    forecast[['yhat','yhat_upper','yhat_lower']] = forecast[['yhat','yhat_upper','yhat_lower']].apply(lambda                                                          x: inv_boxcox(x, lam))
-                    
+                    #forecast[['yhat','yhat_upper','yhat_lower','trend','trend_lower','trend_upper']] =                  forecast[['yhat','yhat_upper','yhat_lower', 'trend','trend_lower','trend_upper']].apply(lambda                                                          x: inv_boxcox(x, lam))
                     # Reshaping historical + forecast:
                     future_forecast = forecast.tail(dur)
                     future_forecast = future_forecast[['ds','yhat','yhat_upper','yhat_lower']]
@@ -142,7 +142,7 @@ def main():
                     df_comb = df_fr.append(future_forecast)
            
                     # Plotting Forecast
-                    rng = ['firebrick', '#4267B2']
+                    rng = ['#4267B2','firebrick']
                     dom = ['Historic', 'Forecast']
                     base = alt.Chart(df_comb.reset_index()).encode(x = alt.X('index:T', axis=alt.Axis(title=                                                                      date[0])))  
                     ml_plot = base.mark_line(interpolate='monotone').encode(y=val[0],color=alt.Color('Type',                                                                         scale=alt.Scale(domain=dom, range=rng)),).interactive()
@@ -154,8 +154,9 @@ def main():
                     st.header('Time Series Forecast')
                     
                     # Plotting
+                    st.plotly_chart(fig)
                     st.subheader("Forecast Components")
-                    st.write(comp)
+                    st.plotly_chart(comp)
                     st.subheader("Time Series Plot with Forecast")
                     st.altair_chart(alt.layer(ml_plot,area).properties(width=1100,height=400))
     
