@@ -5,3 +5,4 @@ altair==4.1.0
 pystan==2.19.1.1
 fbprophet==0.7.1
 numpy==1.20.2
+plotly==4.14.3
