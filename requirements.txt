@@ -2,6 +2,6 @@ streamlit==0.79.0
 scipy==1.6.2
 pandas==1.2.3
 altair==4.1.0
-pystan==2.17
+pystan==2.19.1.1
 fbprophet==0.7.1
 numpy==1.20.2
